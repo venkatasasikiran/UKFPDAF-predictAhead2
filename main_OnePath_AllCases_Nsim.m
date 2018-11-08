@@ -35,7 +35,7 @@ for clutterLoop = 1:length(clutterVersion)
        save('performance','UKF_TP','UKF_RMS','UKF_Ping');        
     end
     for yawDevRateLoop = yawDevRateLoopMin:yawDevRateLoopJump:yawDevRateLoopMax
-        totalSim = 3;        
+        totalSim = 500;        
         if yawDevRateLoop == yawDevRateLoopMin
             DataStore = Init_Data_Store(totalSim,nYaw-nYawStart);
         end

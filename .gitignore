@@ -1,3 +1,7 @@
+#My local files exclusion
+loopParam.mat
+
+
 # Windows default autosave extension
 *.asv
 

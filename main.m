@@ -5,8 +5,6 @@ load("MaxAcc.mat")
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 turnRate = 5;
 ParPath = Struct_Param_Path_Init(true,turnRate,90,[6000,4000],400,100);
-% ParPath.nWaves = 1;
-% ParPath.maxDepth = 2;
 ParGen = Struct_Param_Gen_Init(1/100000);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,12 +16,6 @@ hold off;
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [Timings] = Timing_Model(ParPath,ParGen);
-% if length(Timings.impInstVec)< 30
-%    while(length(Timings.impInstVec)< 30)
-%        [ParPath,devTimeVec,~]= Path_Target(ParPath,ParGen);
-%        [Timings] = Timing_Model(ParPath,ParGen);
-%    end
-% end
 % %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ParStdDev = Struct_Param_Std_Dev([40,10],deg2rad(1),.5);
 [Measurements,ParPath] = Measurement_Model(ParPath,Timings.impInstVec,ParStdDev);
@@ -34,10 +26,10 @@ transWave.true = Planner_True(ParPath,Timings.impInstVec);
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 acc = MaxAcc(2,(MaxAcc(1,:) == turnRate));
 noiseAcc = [acc;acc];
-% [FilterEstimateUKF,transWave.estUKF,Measurements] = UKF_PDAF(ParPath,ParGen,Timings,Measurements,...
-%                                                                 noiseAcc,ClutterStruct,"I",ParStdDev);
-[FilterEstimateUKF,transWave.estUKF,Measurements] =UKF_PDAF3(ParPath,ParGen,Timings,Measurements,...
-                                                                        noiseAcc,ClutterStruct,ParStdDev);                                                            
+[FilterEstimateUKF,transWave.estUKF,Measurements] = UKF_PDAF(ParPath,ParGen,Timings,Measurements,...
+                                                                noiseAcc,ClutterStruct,"I",ParStdDev);
+% [FilterEstimateUKF,transWave.estUKF,Measurements] =UKF_PDAF3(ParPath,ParGen,Timings,Measurements,...
+%                                                                         noiseAcc,ClutterStruct,ParStdDev);                                                            
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 impLength = length(Timings.impInstVec);
 Threshold.cw = 250;

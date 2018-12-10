@@ -14,3 +14,16 @@
         noClutterPts = length(indx);        
         ClutterStruct(i).rangeRateClutter = 5*randn(noClutterPts,1);
     end
+    
+    
+%     area = pi*TarMaxRho^2;
+%     points = ceil(area*clutterDensity);
+%     n = size(impInstVec,1);
+%     thetaClutter = 2*pi*rand(points,n);                                %This is uniform distributiom
+%     rhoClutter = TarMaxRho*rand(points,n);                               %This is uniform distributiom
+%     rangeRateClutter = 5*randn(points,n);
+%     for i = n:-1:1       
+%             ClutterStruct(i).thetaClutter = thetaClutter(:,i);
+%             ClutterStruct(i).rhoClutter = rhoClutter(:,i);              
+%             ClutterStruct(i).rangeRateClutter = rangeRateClutter(:,i);
+%     end

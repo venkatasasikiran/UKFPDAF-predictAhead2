@@ -3,9 +3,9 @@ clear;
 load('MaxAcc.mat');
 clutterVersion = [100000];
 for clutterLoop = 1:length(clutterVersion)
-    yawDevRateLoopMin = 4.5;
+    yawDevRateLoopMin = 1;
     yawDevRateLoopJump = .5;
-    yawDevRateLoopMax = 7;
+    yawDevRateLoopMax = 8.5;
     nYaw = (yawDevRateLoopMax/yawDevRateLoopJump)+1;
     nYawStart = yawDevRateLoopMin/yawDevRateLoopJump;
     if clutterLoop == 1
@@ -19,10 +19,10 @@ for clutterLoop = 1:length(clutterVersion)
        UKF_RMS.I = zeros(length(clutterVersion),nYaw-nYawStart);       
        UKF_TP.IE = zeros(length(clutterVersion),nYaw-nYawStart);
        UKF_RMS.IE = zeros(length(clutterVersion),nYaw-nYawStart);
-       UKF_TP.P = zeros(length(clutterVersion),nYaw-nYawStart);
-       UKF_RMS.P = zeros(length(clutterVersion),nYaw-nYawStart);
-       UKF_TP.PE = zeros(length(clutterVersion),nYaw-nYawStart);
-       UKF_RMS.PE = zeros(length(clutterVersion),nYaw-nYawStart);
+%        UKF_TP.P = zeros(length(clutterVersion),nYaw-nYawStart);
+%        UKF_RMS.P = zeros(length(clutterVersion),nYaw-nYawStart);
+%        UKF_TP.PE = zeros(length(clutterVersion),nYaw-nYawStart);
+%        UKF_RMS.PE = zeros(length(clutterVersion),nYaw-nYawStart);
        save('performance','UKF_TP','UKF_RMS');        
     end
     for yawDevRateLoop = yawDevRateLoopMin:yawDevRateLoopJump:yawDevRateLoopMax
@@ -35,10 +35,10 @@ for clutterLoop = 1:length(clutterVersion)
         tempRMS.I = zeros(totalSim,1);        
         tempTP.IE = zeros(totalSim,1);
         tempRMS.IE = zeros(totalSim,1);
-        tempTP.P = zeros(totalSim,1);
-        tempRMS.P = zeros(totalSim,1);
-        tempTP.PE = zeros(totalSim,1);
-        tempRMS.PE = zeros(totalSim,1);
+%         tempTP.P = zeros(totalSim,1);
+%         tempRMS.P = zeros(totalSim,1);
+%         tempTP.PE = zeros(totalSim,1);
+%         tempRMS.PE = zeros(totalSim,1);
         for nSim = 1:totalSim
             if nSim == 1 && yawDevRateLoop == yawDevRateLoopMin && clutterLoop == 1
                 save('loopParam','clutterVersion','totalSim')                   
@@ -69,7 +69,7 @@ for clutterLoop = 1:length(clutterVersion)
             acc = MaxAcc(2,(MaxAcc(1,:) == yawDevRateLoop));
             noiseAcc = [acc;acc];
     % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-            for caseLoop = ["C","F","I","P","IE","PE"]
+            for caseLoop = ["C","F","I","IE"]
                 if caseLoop == "P"
                     [FilterEstimate,transWave.estUKF,Measurements] =UKF_PDAF3(ParPath,ParGen,Timings,Measurements,...
                                                                         noiseAcc,ClutterStruct,ParStdDev);
@@ -128,10 +128,10 @@ for clutterLoop = 1:length(clutterVersion)
                    UKF_RMS.I(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.I);
                    UKF_TP.IE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempTP.IE);
                    UKF_RMS.IE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.IE);
-                   UKF_TP.P(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempTP.P);
-                   UKF_RMS.P(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.P);
-                   UKF_TP.PE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempTP.PE);
-                   UKF_RMS.PE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.PE);                   
+%                    UKF_TP.P(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempTP.P);
+%                    UKF_RMS.P(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.P);
+%                    UKF_TP.PE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempTP.PE);
+%                    UKF_RMS.PE(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart) = mean(tempRMS.PE);                   
                     tempVal(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart).TP = tempTP;
                     tempVal(clutterLoop,(yawDevRateLoop/yawDevRateLoopJump)+1 - nYawStart).RMS = tempRMS;
                 end

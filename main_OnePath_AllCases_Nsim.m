@@ -52,11 +52,11 @@ for clutterLoop = 1:length(clutterVersion)
             ParGen = Struct_Param_Gen_Init(1/clutterVersion(clutterLoop));% clutterdensity inside the parenthesis
 
     %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            [ParPath,~]= Path_Target_With_Models(ParPath,ParGen);
+            [ParPath,~,~]= Path_Target_With_Models(ParPath,ParGen);
     %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             [Timings] = Timing_Model(ParPath,ParGen);                               
     %% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            ParStdDev = Struct_Param_Std_Dev([40,10],deg2rad(1),.5);
+            ParStdDev = Struct_Param_Std_Dev([100,25],deg2rad(1),.5);
             [Measurements,ParPath] = Measurement_Model(ParPath,Timings.impInstVec,ParStdDev);                                                            
             %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             ClutterStruct = Clutter_Generation(ParPath.TarMaxRho+150,ParGen.clutterDensity,Timings.impInstVec);

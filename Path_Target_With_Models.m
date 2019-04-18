@@ -16,9 +16,11 @@ function [varargout] = Path_Target_With_Models(ParPath,ParGen)
     %% declaration of required variables
     devTime       = Rand_Gen;  
     devTimeVec    = zeros(devVecIndxLimit,2);
+    devAngVec   = zeros(devVecIndxLimit,1);
     if ParPath.isManeuver
         devTimeVec(1,1) = devTime*f +1;
     end
+    devAngIndx    = 1;
     devVecIndx    = 2;
     hapnDev       = 0;
     dirTheta      = atan2(selfY - tarY, selfX - tarX);
@@ -55,6 +57,8 @@ function [varargout] = Path_Target_With_Models(ParPath,ParGen)
                 % the below function gives the turn angle as per gaussian
                 % distribution surrounded around 90 deg
                 devTheta      = Dev_Theta(ParPath.yawDev);
+                devAngVec(devAngIndx) = rad2deg(devTheta);
+                devAngIndx = devAngIndx+1;
                 isDevChoose   = false;
                 isGetDevTheta = false;            
             else
@@ -63,6 +67,8 @@ function [varargout] = Path_Target_With_Models(ParPath,ParGen)
                 %moving right now and what direction it should move.
                 devTheta      = atan2(selfY - tarY, selfX - tarX)  - dirTheta;
                 devTheta      = Theta_Adjust(devTheta);  % adjust the theta such that it is in range of (-pi,pi)
+                devAngVec(devAngIndx) = rad2deg(devTheta);
+                devAngIndx = devAngIndx+1;
                 isDevChoose   = true;
                 isGetDevTheta = false;
                 %isTurnParam   = true;                    % It is made true as because of turning radius the required deviation is not achieved  
@@ -133,11 +139,13 @@ function [varargout] = Path_Target_With_Models(ParPath,ParGen)
     [tarThetaVec,tarRhoVec] = cart2pol(TarPathMat(:,1),TarPathMat(:,2));
     TarPathMatInPol = [tarThetaVec tarRhoVec];
     devTimeVec = devTimeVec(devTimeVec(:,1)~= 0,:);
+    devAngVec = devAngVec(devAngVec(:) ~= 0);
     ParPath.TarPathMat = TarPathMat;
     ParPath.TarPathMatInPol = TarPathMatInPol;
     ParPath.TarMaxRho = max(TarPathMatInPol(:,2));
     varargout{1} = ParPath;
-    varargout{2} = round(devTimeVec);    
+    varargout{2} = round(devTimeVec);
+    varargout{3} = devAngVec;
 
 end
 

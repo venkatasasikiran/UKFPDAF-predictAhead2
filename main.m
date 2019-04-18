@@ -10,7 +10,7 @@ ParPath = Struct_Param_Path_Init(true,turnRate,90,[6000,4000],400,100);
 ParGen = Struct_Param_Gen_Init(1/100000);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[ParPath,~]= Path_Target_With_Models(ParPath,ParGen);
+[ParPath,~,~]= Path_Target_With_Models(ParPath,ParGen);
 figure(1);
 plot(ParPath.TarPathMat(:,1),ParPath.TarPathMat(:,2));
 title('Ground true');
@@ -28,16 +28,17 @@ hold off;
 ParStdDev = Struct_Param_Std_Dev([40,10],deg2rad(1),.5);
 [Measurements,ParPath] = Measurement_Model(ParPath,Timings.impInstVec,ParStdDev);
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-ClutterStruct = Clutter_Generation(ParPath.TarMaxRho+150,ParGen.clutterDensity,Timings.impInstVec);
+ClutterStruct = Clutter_Generation(7500,ParGen.clutterDensity,Timings.impInstVec);
+% ClutterStruct = Clutter_Generation(ParPath.TarMaxRho+150,ParGen.clutterDensity,Timings.impInstVec);
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 transWave.true = Planner_True(ParPath,Timings.impInstVec);
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 acc = MaxAcc(2,(MaxAcc(1,:) == turnRate));
 noiseAcc = [acc;acc];
-% [FilterEstimateUKF,transWave.estUKF,Measurements] = UKF_PDAF(ParPath,ParGen,Timings,Measurements,...
-%                                                                 noiseAcc,ClutterStruct,"I",ParStdDev);
-[FilterEstimateUKF,transWave.estUKF,Measurements] =UKF_PDAF3(ParPath,ParGen,Timings,Measurements,...
-                                                                        noiseAcc,ClutterStruct,ParStdDev);                                                            
+[FilterEstimateUKF,transWave.estUKF,Measurements] = UKF_PDAF(ParPath,ParGen,Timings,Measurements,...
+                                                                noiseAcc,ClutterStruct,"I",ParStdDev);
+% [FilterEstimateUKF,transWave.estUKF,Measurements] =UKF_PDAF3(ParPath,ParGen,Timings,Measurements,...
+%                                                                         noiseAcc,ClutterStruct,ParStdDev);                                                            
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 impLength = length(Timings.impInstVec);
 Threshold.cw = 250;

@@ -1,9 +1,6 @@
 
 
 
-In this all the simulations run data is stored in Data_v8
+In active sonar, CW and FM pulses are the conventional sound pulses transmitted into the water for tracking a target. These pulses are complementary to each other in terms of the range resolution they provide and whether or not they allow the system to measure the Doppler shift. Most active sonars operate in a reverberation-limited environment where it is preferable to transmit CW pulse for high Doppler targets and FM pulse for low Doppler targets. However, the target's Doppler is not known apriori, and right now, an operator chooses between the pulses based on his experience, which presents an unreasonable burden.
 
-This code is copied from UKFPDAF-predictAhead
-In this the code from the parent is modified to include changes for the two step ahead prediction
-
-Previously we simulated it in such a way that there will be a delayed reception. But this is modified in such a way that we have no delay in reception but we simply predict waveforms two instant ahead 
+In this thesis, I devised a couple of decision algorithms that decide which waveform to transmit based on the target's predicted state. A tracking system model consisting of a target path simulator, measurement data modeler, and tracking filter (UKF-PDAF) is implemented to conduct Monte Carlo simulations of the proposed approaches for their performance evaluation. The performance is evaluated by comparing it to the performance of transmitting either CW always or FM always. The proposed approaches improved the target localization estimates by 7.7% and 8.5% on average from the next best performing waveform selection approach. This research helps the sonar operator in making better decisions and also aids the tracking system to be an intelligent one.
